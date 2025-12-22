@@ -1,0 +1,389 @@
+Module(
+  body=[
+    ImportFrom(
+      module='typing',
+      names=[
+        alias(name='Self'),
+        alias(name='Optional')],
+      level=0),
+    ImportFrom(
+      module='pydantic',
+      names=[
+        alias(name='Field'),
+        alias(name='validator')],
+      level=0),
+    ImportFrom(
+      module='backend.models.base_env',
+      names=[
+        alias(name='BaseEnvConfig'),
+        alias(name='NewlineListEnv')],
+      level=0),
+    Assign(
+      targets=[
+        Name(id='DEFAULT_NEXT_QUESTION_PROMPT', ctx=Store())],
+      value=Constant(value="You're a helpful assistant! Your task is to suggest the next question that user might ask. \nHere is the conversation history\n---------------------\n{conversation}\n---------------------\nGiven the conversation history, please give me 3 questions that you might ask next!\nYour answer should be wrapped in three sticks which follows the following format:\n```\n<question 1>\n<question 2>\n<question 3>\n```")),
+    Assign(
+      targets=[
+        Name(id='DEFAULT_SYSTEM_CITATION_PROMPT', ctx=Store())],
+      value=Constant(value='You have provided information from a knowledge base that has been passed to you in nodes of information.\nEach node has useful metadata such as node ID, file name, page, etc.\nPlease add the citation to the data node for each sentence or paragraph that you reference in the provided information.\nThe citation format is: . [citation:<node_id>]()\nWhere the <node_id> is the unique identifier of the data node.\n\nExample:\nWe have two nodes:\n  node_id: xyz\n  file_name: llama.pdf\n  \n  node_id: abc\n  file_name: animal.pdf\n\nUser question: Tell me a fun fact about Llama.\nYour answer:\nA baby llama is called "Cria" [citation:xyz]().\nIt often live in desert [citation:abc]().\nIt\'s cute animal.')),
+    ClassDef(
+      name='ChatConfig',
+      bases=[
+        Name(id='BaseEnvConfig', ctx=Load())],
+      body=[
+        AnnAssign(
+          target=Name(id='custom_prompt', ctx=Store()),
+          annotation=BinOp(
+            left=Name(id='str', ctx=Load()),
+            op=BitOr(),
+            right=Constant(value=None)),
+          value=Call(
+            func=Name(id='Field', ctx=Load()),
+            keywords=[
+              keyword(
+                arg='default',
+                value=Constant(value='You are a helpful assistant who helps users with their questions.')),
+              keyword(
+                arg='description',
+                value=Constant(value='Custom system prompt')),
+              keyword(
+                arg='env',
+                value=Constant(value='CUSTOM_PROMPT')),
+              keyword(
+                arg='preprocess',
+                value=Constant(value=True))]),
+          simple=1),
+        AnnAssign(
+          target=Name(id='conversation_starters', ctx=Store()),
+          annotation=BinOp(
+            left=BinOp(
+              left=Name(id='NewlineListEnv', ctx=Load()),
+              op=BitOr(),
+              right=Name(id='str', ctx=Load())),
+            op=BitOr(),
+            right=Constant(value=None)),
+          value=Call(
+            func=Name(id='Field', ctx=Load()),
+            keywords=[
+              keyword(
+                arg='default',
+                value=Constant(value=None)),
+              keyword(
+                arg='description',
+                value=Constant(value='Suggested questions for users to start a conversation')),
+              keyword(
+                arg='env',
+                value=Constant(value='CONVERSATION_STARTERS')),
+              keyword(
+                arg='preprocess',
+                value=Constant(value=True))]),
+          simple=1),
+        AnnAssign(
+          target=Name(id='next_question_prompt', ctx=Store()),
+          annotation=BinOp(
+            left=Name(id='str', ctx=Load()),
+            op=BitOr(),
+            right=Constant(value=None)),
+          value=Call(
+            func=Name(id='Field', ctx=Load()),
+            keywords=[
+              keyword(
+                arg='default',
+                value=Constant(value=None)),
+              keyword(
+                arg='description',
+                value=Constant(value='Prompt template for suggesting next questions. Set `suggest_next_questions_enabled` to `True` to use this.')),
+              keyword(
+                arg='env',
+                value=Constant(value='NEXT_QUESTION_PROMPT')),
+              keyword(
+                arg='preprocess',
+                value=Constant(value=True))]),
+          simple=1),
+        AnnAssign(
+          target=Name(id='system_citation_prompt', ctx=Store()),
+          annotation=BinOp(
+            left=Name(id='str', ctx=Load()),
+            op=BitOr(),
+            right=Constant(value=None)),
+          value=Call(
+            func=Name(id='Field', ctx=Load()),
+            keywords=[
+              keyword(
+                arg='default',
+                value=Constant(value=None)),
+              keyword(
+                arg='description',
+                value=Constant(value='Prompt for inline text citations. Set `inline_text_citations_enabled` to `True` to use this.')),
+              keyword(
+                arg='env',
+                value=Constant(value='SYSTEM_CITATION_PROMPT')),
+              keyword(
+                arg='preprocess',
+                value=Constant(value=True))]),
+          simple=1),
+        FunctionDef(
+          name='__init__',
+          args=arguments(
+            args=[
+              arg(arg='self')],
+            kwarg=arg(arg='kwargs')),
+          body=[
+            If(
+              test=Compare(
+                left=Constant(value='suggest_next_questions_enabled'),
+                ops=[
+                  In()],
+                comparators=[
+                  Name(id='kwargs', ctx=Load())]),
+              body=[
+                If(
+                  test=Subscript(
+                    value=Name(id='kwargs', ctx=Load()),
+                    slice=Constant(value='suggest_next_questions_enabled'),
+                    ctx=Load()),
+                  body=[
+                    Assign(
+                      targets=[
+                        Subscript(
+                          value=Name(id='kwargs', ctx=Load()),
+                          slice=Constant(value='next_question_prompt'),
+                          ctx=Store())],
+                      value=Name(id='DEFAULT_NEXT_QUESTION_PROMPT', ctx=Load()))],
+                  orelse=[
+                    Assign(
+                      targets=[
+                        Subscript(
+                          value=Name(id='kwargs', ctx=Load()),
+                          slice=Constant(value='next_question_prompt'),
+                          ctx=Store())],
+                      value=Constant(value=None))]),
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='kwargs', ctx=Load()),
+                      attr='pop',
+                      ctx=Load()),
+                    args=[
+                      Constant(value='suggest_next_questions_enabled')]))]),
+            If(
+              test=Compare(
+                left=Constant(value='inline_text_citations_enabled'),
+                ops=[
+                  In()],
+                comparators=[
+                  Name(id='kwargs', ctx=Load())]),
+              body=[
+                If(
+                  test=Subscript(
+                    value=Name(id='kwargs', ctx=Load()),
+                    slice=Constant(value='inline_text_citations_enabled'),
+                    ctx=Load()),
+                  body=[
+                    Assign(
+                      targets=[
+                        Subscript(
+                          value=Name(id='kwargs', ctx=Load()),
+                          slice=Constant(value='system_citation_prompt'),
+                          ctx=Store())],
+                      value=Name(id='DEFAULT_SYSTEM_CITATION_PROMPT', ctx=Load()))],
+                  orelse=[
+                    Assign(
+                      targets=[
+                        Subscript(
+                          value=Name(id='kwargs', ctx=Load()),
+                          slice=Constant(value='system_citation_prompt'),
+                          ctx=Store())],
+                      value=Constant(value=None))]),
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='kwargs', ctx=Load()),
+                      attr='pop',
+                      ctx=Load()),
+                    args=[
+                      Constant(value='inline_text_citations_enabled')]))]),
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Call(
+                    func=Name(id='super', ctx=Load())),
+                  attr='__init__',
+                  ctx=Load()),
+                keywords=[
+                  keyword(
+                    value=Name(id='kwargs', ctx=Load()))]))]),
+        ClassDef(
+          name='Config',
+          body=[
+            Assign(
+              targets=[
+                Name(id='extra', ctx=Store())],
+              value=Constant(value='ignore')),
+            Assign(
+              targets=[
+                Name(id='json_schema_extra', ctx=Store())],
+              value=Dict(
+                keys=[
+                  Constant(value='example')],
+                values=[
+                  Dict(
+                    keys=[
+                      Constant(value='custom_prompt'),
+                      Constant(value='conversation_starters'),
+                      Constant(value='suggest_next_questions_enabled'),
+                      Constant(value='inline_text_citations_enabled')],
+                    values=[
+                      Constant(value='You are a helpful assistant who helps users with their questions.'),
+                      Constant(value='What is the meaning of life?\nTell me a joke.'),
+                      Constant(value=True),
+                      Constant(value=True)])]))]),
+        FunctionDef(
+          name='preprocess_string_prompt',
+          args=arguments(
+            args=[
+              arg(arg='cls'),
+              arg(arg='value')]),
+          body=[
+            Expr(
+              value=Constant(value='\n        To convert empty string prompt to None automatically.\n        ')),
+            If(
+              test=Compare(
+                left=Name(id='value', ctx=Load()),
+                ops=[
+                  Eq()],
+                comparators=[
+                  Constant(value='')]),
+              body=[
+                Return(
+                  value=Constant(value=None))]),
+            Return(
+              value=Name(id='value', ctx=Load()))],
+          decorator_list=[
+            Call(
+              func=Name(id='validator', ctx=Load()),
+              args=[
+                Constant(value='custom_prompt'),
+                Constant(value='next_question_prompt'),
+                Constant(value='system_citation_prompt')],
+              keywords=[
+                keyword(
+                  arg='pre',
+                  value=Constant(value=True))])]),
+        FunctionDef(
+          name='preprocess_conversation_starters',
+          args=arguments(
+            args=[
+              arg(arg='cls'),
+              arg(arg='value')]),
+          body=[
+            Expr(
+              value=Constant(value='\n        To convert empty string prompt to None automatically and split the string to list\n        ')),
+            If(
+              test=Call(
+                func=Name(id='isinstance', ctx=Load()),
+                args=[
+                  Name(id='value', ctx=Load()),
+                  Name(id='list', ctx=Load())]),
+              body=[
+                Return(
+                  value=Call(
+                    func=Name(id='NewlineListEnv', ctx=Load()),
+                    args=[
+                      Name(id='value', ctx=Load())]))]),
+            If(
+              test=Call(
+                func=Name(id='isinstance', ctx=Load()),
+                args=[
+                  Name(id='value', ctx=Load()),
+                  Name(id='str', ctx=Load())]),
+              body=[
+                If(
+                  test=Compare(
+                    left=Name(id='value', ctx=Load()),
+                    ops=[
+                      Eq()],
+                    comparators=[
+                      Constant(value='')]),
+                  body=[
+                    Return(
+                      value=Constant(value=None))],
+                  orelse=[
+                    Return(
+                      value=Call(
+                        func=Name(id='NewlineListEnv', ctx=Load()),
+                        args=[
+                          Call(
+                            func=Attribute(
+                              value=Name(id='value', ctx=Load()),
+                              attr='split',
+                              ctx=Load()),
+                            args=[
+                              Constant(value='\n')])]))])]),
+            Return(
+              value=Name(id='value', ctx=Load()))],
+          decorator_list=[
+            Call(
+              func=Name(id='validator', ctx=Load()),
+              args=[
+                Constant(value='conversation_starters')],
+              keywords=[
+                keyword(
+                  arg='pre',
+                  value=Constant(value=True))])]),
+        FunctionDef(
+          name='get_config',
+          args=arguments(
+            args=[
+              arg(arg='cls')]),
+          body=[
+            Assign(
+              targets=[
+                Name(id='config', ctx=Store())],
+              value=Call(
+                func=Name(id='ChatConfig', ctx=Load()))),
+            Return(
+              value=Name(id='config', ctx=Load()))],
+          decorator_list=[
+            Name(id='classmethod', ctx=Load())],
+          returns=Name(id='Self', ctx=Load())),
+        FunctionDef(
+          name='to_api_response',
+          args=arguments(
+            args=[
+              arg(arg='self')]),
+          body=[
+            Return(
+              value=Dict(
+                keys=[
+                  Constant(value='custom_prompt'),
+                  Constant(value='conversation_starters'),
+                  Constant(value='suggest_next_questions_enabled'),
+                  Constant(value='inline_text_citations_enabled')],
+                values=[
+                  Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='custom_prompt',
+                    ctx=Load()),
+                  Attribute(
+                    value=Name(id='self', ctx=Load()),
+                    attr='conversation_starters',
+                    ctx=Load()),
+                  Compare(
+                    left=Attribute(
+                      value=Name(id='self', ctx=Load()),
+                      attr='next_question_prompt',
+                      ctx=Load()),
+                    ops=[
+                      IsNot()],
+                    comparators=[
+                      Constant(value=None)]),
+                  Compare(
+                    left=Attribute(
+                      value=Name(id='self', ctx=Load()),
+                      attr='system_citation_prompt',
+                      ctx=Load()),
+                    ops=[
+                      IsNot()],
+                    comparators=[
+                      Constant(value=None)])]))])])])
