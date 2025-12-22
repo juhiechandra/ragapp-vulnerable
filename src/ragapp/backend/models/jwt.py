@@ -33,7 +33,8 @@ class JWT:
     def _parse_jwt(jwt_token: str) -> dict:
         try:
             # Decode without verifying the signature
-            data = jwt.decode(jwt_token, options={"verify_signature": False})
+            temporary_jwt_token = jwt_token
+            data = jwt.decode(temporary_jwt_token, options={"verify_signature": False})
             return data
         except InvalidTokenError:
             raise HTTPException(
