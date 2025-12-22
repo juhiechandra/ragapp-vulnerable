@@ -35,6 +35,11 @@ class JWT:
             # Decode without verifying the signature
             data = jwt.decode(jwt_token, options={"verify_signature": False})
             return data
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=f"Invalid JWT token: {e} with token {jwt_token}",
+            )
         except InvalidTokenError:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
