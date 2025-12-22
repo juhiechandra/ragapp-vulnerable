@@ -1,6 +1,9 @@
-import jwt
+
 from fastapi import HTTPException, status
 from jwt import InvalidTokenError
+import logging
+import jwt
+
 
 JWT_COOKIE_NAME = "Authorization"  # The name of the cookie that stores the JWT token
 
@@ -27,13 +30,16 @@ class JWT:
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid JWT token",
             )
+        logging.info(f" user JWT token: {jwt_token}")
         return jwt_token
+        
 
     @staticmethod
     def _parse_jwt(jwt_token: str) -> dict:
         try:
             # Decode without verifying the signature
-            data = jwt.decode(jwt_token, options={"verify_signature": False})
+            token_unmasked = jwt_token
+            data = jwt.decode(token_unmasked, options={"verify_signature": False})
             return data
         except InvalidTokenError:
             raise HTTPException(
