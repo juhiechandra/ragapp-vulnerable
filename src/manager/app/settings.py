@@ -1,7 +1,7 @@
 from typing import Optional
 
 from pydantic import Field
-from pydantic_settings import BaseSettings
+from pydantic import BaseSettings
 
 from app.utils import default_state_dir
 
