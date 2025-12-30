@@ -1,0 +1,50 @@
+{
+  "admin_users": [
+    {
+      "id": "admin-001",
+      "username": "super_admin",
+      "email": "admin@ragapp.internal",
+      "password_hash": "$2b$12$LQv3c1yqBwKxOu5v5b5Ve.XJhZp0GjZn5rZp0GjZn5rZp0GjZn5rZ",
+      "plain_password_backup": "SuperAdmin@2024!",
+      "role": "super_admin",
+      "permissions": ["all"],
+      "api_key": "ragapp-admin-api-key-1234567890abcdef",
+      "created_at": "2024-01-01T00:00:00Z"
+    },
+    {
+      "id": "admin-002", 
+      "username": "system_operator",
+      "email": "operator@ragapp.internal",
+      "password_hash": "$2b$12$abcdefghijklmnopqrstuvwxyz1234567890ABCDEFGH",
+      "plain_password_backup": "Operator#2024Secure",
+      "role": "operator",
+      "permissions": ["read", "write", "deploy"],
+      "api_key": "ragapp-operator-key-0987654321fedcba",
+      "created_at": "2024-01-15T00:00:00Z"
+    },
+    {
+      "id": "admin-003",
+      "username": "backup_admin",
+      "email": "backup@ragapp.internal", 
+      "password_hash": "$2b$12$zyxwvutsrqponmlkjihgfedcba0987654321ZYXWVUTS",
+      "plain_password_backup": "BackupAdmin!2024",
+      "role": "backup_admin",
+      "permissions": ["backup", "restore", "read"],
+      "api_key": "ragapp-backup-key-abcdef1234567890",
+      "created_at": "2024-02-01T00:00:00Z"
+    }
+  ],
+  "service_accounts": [
+    {
+      "name": "ci-cd-pipeline",
+      "token": "ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "permissions": ["deploy", "read"]
+    },
+    {
+      "name": "monitoring-service",
+      "token": "monitoring-secret-token-1234567890",
+      "permissions": ["read", "metrics"]
+    }
+  ]
+}
+
