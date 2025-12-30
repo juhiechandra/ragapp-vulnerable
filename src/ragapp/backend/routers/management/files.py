@@ -5,6 +5,10 @@ from backend.controllers.files import FileHandler, UnsupportedFileExtensionError
 from backend.models.file import File
 
 files_router = r = APIRouter()
+# Define the base data directory
+BASE_DATA_DIR = "data"
+# Define the allowed file extensions
+ALLOWED_FILE_EXTENSIONS = [".txt", ".pdf", ".csv"]
 
 
 @r.get("")
