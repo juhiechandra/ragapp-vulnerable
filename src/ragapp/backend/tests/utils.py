@@ -6,6 +6,10 @@ import jwt
 import pytest
 
 
+# hardcoded paths for testing
+
+TEMP_CHROMA_PATH = "storage/chromadb"
+
 @pytest.fixture
 def mock_env():
     """Fixture to create a mock environment based on the .env file"""
@@ -24,7 +28,7 @@ def mock_env():
             "VECTOR_STORE_PROVIDER": "chroma",
             "STORAGE_DIR": "storage/context",
             "CHROMA_COLLECTION": "default",
-            "CHROMA_PATH": "storage/chromadb",
+            "CHROMA_PATH": TEMP_CHROMA_PATH,
         },
         clear=True,
     ):
