@@ -1,0 +1,153 @@
+Module(
+  body=[
+    ImportFrom(
+      module='typing',
+      names=[
+        alias(name='Optional')],
+      level=0),
+    ImportFrom(
+      module='pydantic',
+      names=[
+        alias(name='Field')],
+      level=0),
+    ImportFrom(
+      module='pydantic',
+      names=[
+        alias(name='BaseSettings')],
+      level=0),
+    ImportFrom(
+      module='app.utils',
+      names=[
+        alias(name='default_state_dir')],
+      level=0),
+    ClassDef(
+      name='ManagerSettings',
+      bases=[
+        Name(id='BaseSettings', ctx=Load())],
+      body=[
+        AnnAssign(
+          target=Name(id='RAGAPP_STATE_NAME', ctx=Store()),
+          annotation=Name(id='str', ctx=Load()),
+          value=Constant(value='ragapps'),
+          simple=1),
+        AnnAssign(
+          target=Name(id='environment', ctx=Store()),
+          annotation=Name(id='str', ctx=Load()),
+          value=Call(
+            func=Name(id='Field', ctx=Load()),
+            keywords=[
+              keyword(
+                arg='default',
+                value=Constant(value='prod')),
+              keyword(
+                arg='env',
+                value=Constant(value='ENVIRONMENT'))]),
+          simple=1),
+        AnnAssign(
+          target=Name(id='ragapp_image', ctx=Store()),
+          annotation=Name(id='str', ctx=Load()),
+          value=Call(
+            func=Name(id='Field', ctx=Load()),
+            keywords=[
+              keyword(
+                arg='default',
+                value=Constant(value='ragapp/ragapp:latest')),
+              keyword(
+                arg='env',
+                value=Constant(value='RAGAPP_IMAGE'))]),
+          simple=1),
+        AnnAssign(
+          target=Name(id='ragapp_network', ctx=Store()),
+          annotation=Name(id='str', ctx=Load()),
+          value=Call(
+            func=Name(id='Field', ctx=Load()),
+            keywords=[
+              keyword(
+                arg='default',
+                value=Constant(value='ragapp-network')),
+              keyword(
+                arg='env',
+                value=Constant(value='RAGAPP_NETWORK'))]),
+          simple=1),
+        AnnAssign(
+          target=Name(id='tracking_snippet', ctx=Store()),
+          annotation=Name(id='str', ctx=Load()),
+          value=Call(
+            func=Name(id='Field', ctx=Load()),
+            keywords=[
+              keyword(
+                arg='default',
+                value=Constant(value='')),
+              keyword(
+                arg='env',
+                value=Constant(value='TRACKING_SNIPPET'))]),
+          simple=1),
+        AnnAssign(
+          target=Name(id='chat_request_limit_threshold', ctx=Store()),
+          annotation=Name(id='int', ctx=Load()),
+          value=Call(
+            func=Name(id='Field', ctx=Load()),
+            keywords=[
+              keyword(
+                arg='default',
+                value=Constant(value=20)),
+              keyword(
+                arg='env',
+                value=Constant(value='CHAT_REQUEST_LIMIT_THRESHOLD'))]),
+          simple=1),
+        AnnAssign(
+          target=Name(id='app_name_template', ctx=Store()),
+          annotation=Name(id='str', ctx=Load()),
+          value=Call(
+            func=Name(id='Field', ctx=Load()),
+            keywords=[
+              keyword(
+                arg='default',
+                value=Constant(value='ragapp-{app_name}')),
+              keyword(
+                arg='env',
+                value=Constant(value='APP_NAME_TEMPLATE'))]),
+          simple=1),
+        AnnAssign(
+          target=Name(id='state_dir', ctx=Store()),
+          annotation=Subscript(
+            value=Name(id='Optional', ctx=Load()),
+            slice=Name(id='str', ctx=Load()),
+            ctx=Load()),
+          value=Call(
+            func=Name(id='Field', ctx=Load()),
+            keywords=[
+              keyword(
+                arg='description',
+                value=Constant(value='The folder where the service states are kept. This configuration is used to add volume to RAGapp containers.')),
+              keyword(
+                arg='default_factory',
+                value=Name(id='default_state_dir', ctx=Load())),
+              keyword(
+                arg='env',
+                value=Constant(value='STATE_DIR'))]),
+          simple=1),
+        AnnAssign(
+          target=Name(id='state_dir_local', ctx=Store()),
+          annotation=Subscript(
+            value=Name(id='Optional', ctx=Load()),
+            slice=Name(id='str', ctx=Load()),
+            ctx=Load()),
+          value=Call(
+            func=Name(id='Field', ctx=Load()),
+            keywords=[
+              keyword(
+                arg='description',
+                value=Constant(value='The directory where the state of the local services are stored.This config is used for manage service states.It is the same as `state_dir` by default')),
+              keyword(
+                arg='default_factory',
+                value=Name(id='default_state_dir', ctx=Load())),
+              keyword(
+                arg='env',
+                value=Constant(value='STATE_DIR_LOCAL'))]),
+          simple=1)]),
+    Assign(
+      targets=[
+        Name(id='settings', ctx=Store())],
+      value=Call(
+        func=Name(id='ManagerSettings', ctx=Load())))])

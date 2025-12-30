@@ -3,8 +3,7 @@ from typing import List
 
 import dotenv
 from dotenv.main import DotEnv
-from pydantic.json_schema import CoreSchema
-from pydantic_settings import BaseSettings
+from pydantic import BaseSettings
 
 from backend.constants import ENV_FILE_PATH
 
@@ -12,6 +11,7 @@ from backend.constants import ENV_FILE_PATH
 class NewlineListEnv(List[str]):
     """
     A custom data type to represent a list of strings separated by newlines.
+    Compatible with Pydantic v1 (used by FastAPI 0.65.1).
     """
 
     def __str__(self):
@@ -19,10 +19,6 @@ class NewlineListEnv(List[str]):
 
     def __repr__(self):
         return str(self)
-
-    @classmethod
-    def __get_pydantic_core_schema__(cls, source_type, handler) -> CoreSchema:
-        return handler(NewlineListEnv)
 
 
 class BaseEnvConfig(BaseSettings):

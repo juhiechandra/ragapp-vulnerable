@@ -1,0 +1,197 @@
+Module(
+  body=[
+    Import(
+      names=[
+        alias(name='tarfile')]),
+    Import(
+      names=[
+        alias(name='os')]),
+    FunctionDef(
+      name='extract_tar_file',
+      args=arguments(
+        args=[
+          arg(arg='tar_file_path'),
+          arg(arg='extract_path')],
+        defaults=[
+          Constant(value=None)]),
+      body=[
+        If(
+          test=Name(id='extract_path', ctx=Load()),
+          body=[
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Name(id='os', ctx=Load()),
+                  attr='makedirs',
+                  ctx=Load()),
+                args=[
+                  Name(id='extract_path', ctx=Load())],
+                keywords=[
+                  keyword(
+                    arg='exist_ok',
+                    value=Constant(value=True))])),
+            With(
+              items=[
+                withitem(
+                  context_expr=Call(
+                    func=Attribute(
+                      value=Name(id='tarfile', ctx=Load()),
+                      attr='open',
+                      ctx=Load()),
+                    args=[
+                      Name(id='tar_file_path', ctx=Load()),
+                      Constant(value='r')]),
+                  optional_vars=Name(id='tar', ctx=Store()))],
+              body=[
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='tar', ctx=Load()),
+                      attr='extractall',
+                      ctx=Load()),
+                    keywords=[
+                      keyword(
+                        arg='path',
+                        value=Name(id='extract_path', ctx=Load())),
+                      keyword(
+                        arg='filter',
+                        value=Constant(value='data'))]))])],
+          orelse=[
+            With(
+              items=[
+                withitem(
+                  context_expr=Call(
+                    func=Attribute(
+                      value=Name(id='tarfile', ctx=Load()),
+                      attr='open',
+                      ctx=Load()),
+                    args=[
+                      Name(id='tar_file_path', ctx=Load()),
+                      Constant(value='r')]),
+                  optional_vars=Name(id='tar', ctx=Store()))],
+              body=[
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='tar', ctx=Load()),
+                      attr='extractall',
+                      ctx=Load()),
+                    keywords=[
+                      keyword(
+                        arg='filter',
+                        value=Constant(value='data'))]))])])]),
+    FunctionDef(
+      name='get_files_from_tar_file',
+      args=arguments(
+        args=[
+          arg(arg='tar_file_path')]),
+      body=[
+        With(
+          items=[
+            withitem(
+              context_expr=Call(
+                func=Attribute(
+                  value=Name(id='tarfile', ctx=Load()),
+                  attr='open',
+                  ctx=Load()),
+                args=[
+                  Name(id='tar_file_path', ctx=Load()),
+                  Constant(value='r')]),
+              optional_vars=Name(id='tar', ctx=Store()))],
+          body=[
+            Return(
+              value=Call(
+                func=Attribute(
+                  value=Name(id='tar', ctx=Load()),
+                  attr='getnames',
+                  ctx=Load())))])]),
+    FunctionDef(
+      name='extract_tarfile',
+      args=arguments(
+        args=[
+          arg(arg='tar_file_path'),
+          arg(arg='extract_path')],
+        defaults=[
+          Constant(value=None)]),
+      body=[
+        If(
+          test=Name(id='extract_path', ctx=Load()),
+          body=[
+            Expr(
+              value=Call(
+                func=Attribute(
+                  value=Name(id='os', ctx=Load()),
+                  attr='makedirs',
+                  ctx=Load()),
+                args=[
+                  Name(id='extract_path', ctx=Load())],
+                keywords=[
+                  keyword(
+                    arg='exist_ok',
+                    value=Constant(value=True))])),
+            With(
+              items=[
+                withitem(
+                  context_expr=Call(
+                    func=Attribute(
+                      value=Name(id='tarfile', ctx=Load()),
+                      attr='open',
+                      ctx=Load()),
+                    args=[
+                      Name(id='tar_file_path', ctx=Load()),
+                      Constant(value='r')]),
+                  optional_vars=Name(id='tar', ctx=Store()))],
+              body=[
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='tar', ctx=Load()),
+                      attr='extractall',
+                      ctx=Load()),
+                    keywords=[
+                      keyword(
+                        arg='path',
+                        value=Name(id='extract_path', ctx=Load())),
+                      keyword(
+                        arg='filter',
+                        value=Constant(value='tar'))]))])],
+          orelse=[
+            With(
+              items=[
+                withitem(
+                  context_expr=Call(
+                    func=Attribute(
+                      value=Name(id='tarfile', ctx=Load()),
+                      attr='open',
+                      ctx=Load()),
+                    args=[
+                      Name(id='tar_file_path', ctx=Load()),
+                      Constant(value='r')]),
+                  optional_vars=Name(id='tar', ctx=Store()))],
+              body=[
+                Expr(
+                  value=Call(
+                    func=Attribute(
+                      value=Name(id='tar', ctx=Load()),
+                      attr='extractall',
+                      ctx=Load()),
+                    keywords=[
+                      keyword(
+                        arg='filter',
+                        value=Constant(value='tar'))]))])])]),
+    If(
+      test=Compare(
+        left=Name(id='__name__', ctx=Load()),
+        ops=[
+          Eq()],
+        comparators=[
+          Constant(value='__main__')]),
+      body=[
+        Expr(
+          value=Call(
+            func=Name(id='print', ctx=Load()),
+            args=[
+              Call(
+                func=Name(id='get_files_from_tar_file', ctx=Load()),
+                args=[
+                  Constant(value='test.tar')])]))])])
