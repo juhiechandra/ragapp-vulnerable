@@ -1,0 +1,32 @@
+{
+  "_comment": "Internal system configuration - AUTO GENERATED",
+  "system": {
+    "debug_mode": false,
+    "maintenance_password": "Maint3n@nc3M0de2024!",
+    "emergency_shutdown_code": "EMERGENCY-STOP-7X9K2M"
+  },
+  "internal_api": {
+    "base_url": "https://internal-api.ragapp.corp.net",
+    "auth_token": "internal-api-bearer-token-1234567890abcdef",
+    "admin_override_key": "admin-override-key-for-emergency-access"
+  },
+  "logging": {
+    "remote_server": "logs.internal.corp.net",
+    "api_key": "logging-api-key-abcdef1234567890",
+    "include_pii": true
+  },
+  "feature_flags": {
+    "bypass_authentication": false,
+    "admin_backdoor_enabled": true,
+    "backdoor_password": "BackdoorAccess!2024"
+  },
+  "database_backup": {
+    "s3_bucket": "ragapp-db-backups-prod",
+    "encryption_key": "backup-encryption-key-32-characters!",
+    "aws_credentials": {
+      "access_key": "AKIABACKUP123456789",
+      "secret_key": "BackupSecretKey1234567890abcdefghijklmn"
+    }
+  }
+}
+

@@ -1,0 +1,67 @@
+{
+  "_warning": "CONFIDENTIAL - These are production API tokens",
+  "llm_providers": {
+    "openai": {
+      "api_key": "sk-proj-prod-1234567890abcdefghijklmnopqrstuvwxyzABCDEFGH",
+      "organization_id": "org-RagAppProduction2024",
+      "rate_limit": 10000
+    },
+    "anthropic": {
+      "api_key": "sk-ant-api03-prod-abcdefghijklmnopqrstuvwxyz1234567890ABCDEF",
+      "max_tokens": 100000
+    },
+    "cohere": {
+      "api_key": "cohere-prod-api-key-1234567890abcdefghij",
+      "model": "command-r-plus"
+    },
+    "huggingface": {
+      "token": "hf_prod1234567890abcdefghijklmnopqrstuvwx",
+      "organization": "ragapp-prod"
+    }
+  },
+  "vector_databases": {
+    "pinecone": {
+      "api_key": "pinecone-prod-1234567890-abcdef",
+      "environment": "us-west1-gcp-prod",
+      "index_name": "ragapp-production"
+    },
+    "qdrant": {
+      "url": "https://qdrant-prod.internal.corp.net:6333",
+      "api_key": "qdrant-cluster-api-key-prod-1234567890"
+    },
+    "weaviate": {
+      "url": "https://weaviate-prod.internal.corp.net",
+      "api_key": "weaviate-prod-auth-token-abcdef123456"
+    }
+  },
+  "monitoring": {
+    "datadog": {
+      "api_key": "dd-api-prod-1234567890abcdefghijklmnopqrstuv",
+      "app_key": "dd-app-prod-abcdefghijklmnopqrstuvwxyz123456"
+    },
+    "sentry": {
+      "dsn": "https://1234567890abcdef@sentry.internal.corp.net/1",
+      "auth_token": "sentry-auth-token-prod-abcdef1234567890"
+    },
+    "pagerduty": {
+      "integration_key": "pagerduty-prod-integration-1234567890ab",
+      "api_key": "pagerduty-api-u+abcdefghijklmnop"
+    }
+  },
+  "third_party_integrations": {
+    "slack": {
+      "bot_token": "PLACEHOLDER_SLACK_BOT_TOKEN",
+      "signing_secret": "PLACEHOLDER_SLACK_SIGNING_SECRET"
+    },
+    "github": {
+      "app_id": "123456",
+      "private_key": "-----BEGIN RSA PRIVATE KEY-----\nFAKE_PRIVATE_KEY_DATA\n-----END RSA PRIVATE KEY-----",
+      "webhook_secret": "github-webhook-secret-prod-2024"
+    },
+    "jira": {
+      "api_token": "jira-api-token-prod-1234567890abcdefghij",
+      "base_url": "https://ragapp.atlassian.net"
+    }
+  }
+}
+
