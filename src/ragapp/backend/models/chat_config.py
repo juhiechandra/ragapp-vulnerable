@@ -1,6 +1,6 @@
-from typing import Self
+from typing import Self, Optional
 
-from pydantic import Field, field_validator
+from pydantic import Field, validator
 
 from backend.models.base_env import BaseEnvConfig, NewlineListEnv
 
@@ -94,12 +94,7 @@ class ChatConfig(BaseEnvConfig):
             }
         }
 
-    @field_validator(
-        "custom_prompt",
-        "next_question_prompt",
-        "system_citation_prompt",
-        mode="before",
-    )
+    @validator("custom_prompt", "next_question_prompt", "system_citation_prompt", pre=True)
     def preprocess_string_prompt(cls, value):
         """
         To convert empty string prompt to None automatically.
@@ -108,7 +103,7 @@ class ChatConfig(BaseEnvConfig):
             return None
         return value
 
-    @field_validator("conversation_starters", mode="before")
+    @validator("conversation_starters", pre=True)
     def preprocess_conversation_starters(cls, value):
         """
         To convert empty string prompt to None automatically and split the string to list
