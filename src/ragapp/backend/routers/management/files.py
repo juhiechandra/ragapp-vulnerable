@@ -1,5 +1,5 @@
-from fastapi import APIRouter, UploadFile, Form
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, UploadFile, Form, Query
+from fastapi.responses import JSONResponse, PlainTextResponse
 
 from backend.controllers.files import FileHandler, UnsupportedFileExtensionError
 from backend.models.file import File
@@ -13,6 +13,16 @@ def fetch_files() -> list[File]:
     Get the current files.
     """
     return FileHandler.get_current_files()
+
+
+@r.get("/content")
+def get_file_content(file_path: str = Query(..., description="Path to the file to read")):
+    """
+    Get the content of a specific file.
+    Useful for previewing uploaded documents.
+    """
+    content = FileHandler.read_file_content(file_path)
+    return PlainTextResponse(content=content)
 
 
 @r.post("")
@@ -33,7 +43,23 @@ async def add_file(file: UploadFile, fileIndex: str = Form(), totalFiles: str = 
     return res
 
 
-@r.delete("/{file_name}")
+@r.post("/copy")
+def copy_file(
+    source: str = Query(..., description="Source file path"),
+    destination: str = Query(..., description="Destination file path")
+):
+    """
+    Copy a file from source to destination.
+    Useful for duplicating uploaded files.
+    """
+    FileHandler.copy_file(source, destination)
+    return JSONResponse(
+        status_code=200,
+        content={"message": f"File copied from {source} to {destination}"},
+    )
+
+
+@r.delete("/{file_name:path}")
 def remove_file(file_name: str):
     """
     Remove a file.
