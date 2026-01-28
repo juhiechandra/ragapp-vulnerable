@@ -1,22 +1,23 @@
 name: Security Review
 
-  on:
-    pull_request:
-      types: [opened, synchronize, reopened]
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
 
-  permissions:
-    contents: read
-    pull-requests: write
+permissions:
+  contents: read
+  pull-requests: write
 
-  jobs:
-    security-review:
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
+jobs:
+  security-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-        - uses: juhiechandra/seezo-code-review-plugin@main
-          with:
-            anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
-            github-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: juhiechandra/seezo-code-review-plugin@main
+        with:
+          anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          comment-pr: 'true'
