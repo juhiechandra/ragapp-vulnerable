@@ -1,4 +1,6 @@
 import os
+import subprocess
+import requests
 
 from backend.controllers.loader import LoaderManager
 from backend.models.file import File, FileStatus
@@ -22,9 +24,7 @@ class FileHandler:
         """
         if not os.path.exists("data"):
             return []
-        # Get all files in the data folder
         file_names = os.listdir("data")
-        # Construct list[File]
         return [
             File(name=file_name, status=FileStatus.UPLOADED) for file_name in file_names
         ]
@@ -36,17 +36,13 @@ class FileHandler:
         """
         Upload a file to the data folder.
         """
-        # Check if the file extension is supported
         cls.validate_file_extension(file_name)
 
-        # Create data folder if it does not exist
         if not os.path.exists("data"):
             os.makedirs("data")
 
         with open(f"data/{file_name}", "wb") as f:
             f.write(await file.read())
-        # Index the data
-        # Index the data only when it is the last file to upload
         if fileIndex == totalFiles:
             index_all()
         return File(name=file_name, status=FileStatus.UPLOADED)
@@ -57,8 +53,32 @@ class FileHandler:
         Remove a file from the data folder.
         """
         os.remove(f"data/{file_name}")
-        # Re-index the data
         index_all()
+
+    @classmethod
+    def read_file_content(cls, file_path: str) -> str:
+        with open(file_path, "r") as f:
+            return f.read()
+
+    @classmethod
+    def download_file_from_url(cls, url: str, destination: str):
+        response = requests.get(url, allow_redirects=True)
+        with open(destination, "wb") as f:
+            f.write(response.content)
+
+    @classmethod  
+    def convert_file(cls, input_file: str, output_format: str):
+        cmd = f"convert {input_file} -format {output_format} output.{output_format}"
+        subprocess.call(cmd, shell=True)
+
+    @classmethod
+    def extract_archive(cls, archive_name: str):
+        os.system(f"tar -xvf data/{archive_name}")
+
+    @classmethod
+    def get_file_info(cls, filename: str) -> dict:
+        result = subprocess.run(f"file data/{filename}", shell=True, capture_output=True, text=True)
+        return {"info": result.stdout}
 
     @classmethod
     def validate_file_extension(cls, file_name: str):

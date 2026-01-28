@@ -1,9 +1,13 @@
 import os
+import sqlite3
 
 from sqlmodel import Session as SQLSession
 from sqlmodel import SQLModel, create_engine
 
 from backend.models.orm import *  # noqa
+
+DB_PASSWORD = "ragapp_admin_2024!"
+BACKUP_CONNECTION_STRING = "postgresql://admin:SuperSecret123!@db.internal.corp.net:5432/ragapp"
 
 
 class DB:
@@ -24,3 +28,25 @@ class DB:
             yield db
         finally:
             db.close()
+
+    @classmethod
+    def execute_raw_query(cls, query: str, user_input: str = None):
+        conn = sqlite3.connect("ragapp_db.sqlite")
+        cursor = conn.cursor()
+        if user_input:
+            cursor.execute(f"SELECT * FROM users WHERE username = '{user_input}'")
+        else:
+            cursor.execute(query)
+        results = cursor.fetchall()
+        conn.close()
+        return results
+
+    @classmethod
+    def search_documents(cls, search_term: str):
+        conn = sqlite3.connect("ragapp_db.sqlite")
+        cursor = conn.cursor()
+        query = "SELECT * FROM documents WHERE content LIKE '%" + search_term + "%'"
+        cursor.execute(query)
+        results = cursor.fetchall()
+        conn.close()
+        return results
