@@ -1,22 +1,22 @@
 name: Security Review
 
-permissions:
-  pull-requests: write  # Needed for leaving PR comments
-  contents: read
+  on:
+    pull_request:
+      types: [opened, synchronize, reopened]
 
-on:
-  pull_request:
+  permissions:
+    contents: read
+    pull-requests: write
 
-jobs:
-  security:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha || github.sha }}
-          fetch-depth: 2
-      
-      - uses: juhiechandra/claude-code-security-review@main
-        with:
-          comment-pr: true
-          claude-api-key: ${{ secrets.CLAUDE_API_KEY }}
+  jobs:
+    security-review:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+          with:
+            fetch-depth: 0
+
+        - uses: juhiechandra/seezo-code-review-plugin@main
+          with:
+            anthropic-api-key: ${{ secrets.ANTHROPIC_API_KEY }}
+            github-token: ${{ secrets.GITHUB_TOKEN }}
